@@ -3,11 +3,12 @@
 import tweepy
 
 # import keys
-apiKey = open("/Users/gabrielconlon/.ssh/twitterAPIKeys/key.pub", "r").readline().strip()
-apiSecretKey = open("/Users/gabrielconlon/.ssh/twitterAPIKeys/key", "r").readline().strip()
+keyFilePath = "<path to folder containing keys>"
+apiKey = open(f"{keyFilePath}key.pub", "r").readline().strip()
+apiSecretKey = open(f"{keyFilePath}key", "r").readline().strip()
 
-accessKey = open("/Users/gabrielconlon/.ssh/twitterAPIKeys/access.pub", "r").readline().strip()
-accessSecretKey = open("/Users/gabrielconlon/.ssh/twitterAPIKeys/access", "r").readline().strip()
+accessKey = open(f"{keyFilePath}access.pub", "r").readline().strip()
+accessSecretKey = open(f"{keyFilePath}access", "r").readline().strip()
 
 
 # Authenticate to Twitter
@@ -22,3 +23,26 @@ if (api.verify_credentials()):
     print("Authentication OK")
 else:
     print("Error during authentication")
+
+
+run = True
+while run:
+    # Options menu
+    option = input("""
+    Choose an option:
+        1: Post a tweet
+        2: Read tweets
+        3: Quit
+    """)
+    if option == "1":
+        # Post a tweet
+        tweet = input("Enter text to tweet: ")
+        api.update_status(tweet)
+    elif option == "2":
+        public_tweets = api.home_timeline()
+        for tweet in public_tweets:
+            print(tweet.text)
+    elif option == "3":
+        run = False
+    else:
+        print("Invalid Input.")
